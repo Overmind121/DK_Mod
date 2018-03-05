@@ -27,6 +27,8 @@ MINPOINT_DRIVE = 150
 #Pulse values for servo
 #servo will control steering
 #where mid will be going straight
+STEERING_CHANNEL = 0
+
 MIDPOINT_SERVO = 225
 MAXPOINT_SERVO = 600
 MINPOINT_SERVO = 150
@@ -47,7 +49,7 @@ def set_servo_pulse(channel, pulse):
   pwm.set_pwm(channel, 0, pulse)
 
 ############################################
-
+#this how we check that we dont pass the maximum values
 def clamp(checkVal, minVal ,maxVal):
   if checkVal > maxVal:
     return maxVal
@@ -64,7 +66,6 @@ These functions control drive motor
 ##########################################
 #we want this function to pass in the speed we want going from 0 all the to 100
 def moveForward(speed):
-  clamp(speed,0,100)
   #we want set pulse to go from 225 - 600 = 375
   set_pulse = int(speed*3.75+MIDPOINT_DRIVE)
   #make sure the set pulse value is within the max and min
@@ -93,17 +94,17 @@ def turnLeft(angle):
   set_pulse = clamp(set_pulse,MIDPOINT_SERVO,MAXPOINT_DRIVE)
 
   #3.75 = 375 /100 which is max speed
-  set_servo_pulse(DRIVE_CHANNEL,set_pulse)
+  set_servo_pulse(STEERING_CHANNEL,set_pulse)
 
 def turnRight(angle):
   #we want set pulse to go from 225 - 600 = 375
   set_pulse = int(MIDPOINT_SERVO - angle*4.17)
   #3.75 = 375 /100 which is max speed
-  set_servo_pulse(DRIVE_CHANNEL,set_pulse)
+  set_servo_pulse(STEERING_CHANNEL,set_pulse)
 
 def turnCenter():
   set_pulse = MIDPOINT_SERVO
-  set_servo_pulse(DRIVE_CHANNEL,set_pulse)
+  set_servo_pulse(STEERING_CHANNEL,set_pulse)
 
   
 
