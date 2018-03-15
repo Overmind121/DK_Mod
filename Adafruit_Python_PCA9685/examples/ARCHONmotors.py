@@ -71,6 +71,7 @@ def moveForward(speed):
   #make sure the set pulse value is within the max and min
   #3.75 = 375 /100 which is max speed
   set_servo_pulse(DRIVE_CHANNEL,set_pulse)
+  pwm.set_pwm(channel, 0, pulse)
 
 def moveBackward(speed):
   #we want set pulse to go from 225 - 600 = 375
@@ -81,7 +82,7 @@ def moveBackward(speed):
 def moveStop():
   set_pulse = MIDPOINT_DRIVE
   set_servo_pulse(DRIVE_CHANNEL,set_pulse)
-
+  set_servo_pulse(channel, 0, pulse)
 ##########################################
 '''
 These functions control steering servo

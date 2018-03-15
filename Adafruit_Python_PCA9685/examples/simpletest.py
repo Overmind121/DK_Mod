@@ -20,27 +20,67 @@ pwm = Adafruit_PCA9685.PCA9685()
 #pwm = Adafruit_PCA9685.PCA9685(address=0x41, busnum=2)
 
 # Configure min and max servo pulse lengths
-servo_min = 150+100  # Min pulse length out of 4096
-servo_max = 600-100  # Max pulse length out of 4096
+#this is the bit resolution goes from 0 - 4095
+servo_min = 229  # Min pulse length out of 4095
+#1100 us
+servo_middle = 310  # Max pulse length out of 4095
+#1500 us
+servo_max = 395  # Max pulse length out of 4095
+#1900 us
+#multiply by 4.8 to get the microseconds pulse width
 
-# Helper function to make setting a servo pulse width simpler.
-def set_servo_pulse(channel, pulse):
-    pulse_length = 1000000    # 1,000,000 us per second
-    pulse_length //= 60       # 60 Hz
-    print('{0}us per period'.format(pulse_length))
-    pulse_length //= 4096     # 12 bits of resolution
-    print('{0}us per bit'.format(pulse_length))
-    pulse *= 1000
-    pulse //= pulse_length
-    pwm.set_pwm(channel, 0, pulse)
+'''
+so here is how it goes
+if you set the pulse to 4095 you will see this on your oscope
+__________________________   ____________________
+                          |_|
 
-# Set frequency to 60hz, good for servos.
-pwm.set_pwm_freq(60)
+example freq is 50 hz so period the time the signal repeats (1/T =f)
+is 0.02seconds
+so that means 0.02 seconds or  20ms
 
+measurement I made
+    this is close to 1500us (measuring 310 = 1.490ms)
+    ratio looks closer to 4.8 > 1490/310 = 4.8
+    roughly 150 = 720 microseconds 4.8
+    this is close to 1500us (measuring 310 = 1.490ms)
+    ratio looks closer to 4.8 > 1490/310 = 4.8
+'''
+
+
+# Set frequency to 60hz, good for servos. measured = 63.21hz
+#pwm.set_pwm_freq(60)
+
+pwm.set_pwm_freq(48)
+#with my oscope i measure setting 48 in here
+#to be closer to 50hz in real measurement (50.76hz)
+#measured coming from receiver on donkeycar = 50hz
+
+#every 60 times per second
+#____________||___ duration of pulse will always be ~ 15.82ms repeating
+#set motors off
+pwm.set_pwm(1, 0, 310)
 print('Moving servo on channel 0, press Ctrl-C to quit...')
-while True:
+time.sleep(1)
+pwm.set_pwm(1, 0, 340)
+time.sleep(2)
+pwm.set_pwm(1, 0, 310)
+time.sleep(1)
     # Move servo on channel O between extremes.
-    pwm.set_pwm(0, 0, servo_min)
-    time.sleep(1)
-    pwm.set_pwm(0, 0, servo_max)
-    time.sleep(1)
+while(1):
+
+    
+    
+    pwm.set_pwm(0, 0, 310)
+    time.sleep(2)
+
+    pwm.set_pwm(0, 0, 530)
+    time.sleep(2)
+
+    pwm.set_pwm(0, 0, 310)
+    time.sleep(2)
+
+    pwm.set_pwm(0, 0, 130)
+    time.sleep(2)
+
+    break;
