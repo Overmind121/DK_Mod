@@ -24,15 +24,21 @@ from collections import deque
 h, s, v = 100, 100, 100
 gauss = 5
 # sets the global variables for the hue, sat, and val
-
-
+#def distance_to_camera(knownWidth, focalLength, perWidth):
+ #   return (knownWidth * focalLength)/perWidth
+def distance(pixelRadius):
+    getDistance = 1349*(pixelRadius**(-0.901))
+    return(getDistance)
+def distanceSD(pixelRadius2):
+     getSD = 856*(pixelRadius2**(-0.906))
+     return getSD
 cv2.namedWindow('Control Panel')  # makes a control panel
 # cv.CreateTrackbar(trackbarName, windowName, initial value, range, onChange)  None
-cv2.createTrackbar('hue', 'Control Panel', 0, 180, nothing)  # sets the hue trackbar on the control panel
-cv2.createTrackbar('sat', 'Control Panel', 205, 255, nothing)  # sets the sat trackbar on the control panel
-cv2.createTrackbar('val', 'Control Panel', 255, 255, nothing)  # sets the val trackbar on the control panel
-cv2.createTrackbar('range', 'Control Panel', 69, 127, nothing)
-cv2.createTrackbar('srange', 'Control Panel', 25, 127, nothing)
+cv2.createTrackbar('hue', 'Control Panel', 173, 180, nothing)  # sets the hue trackbar on the control panel
+cv2.createTrackbar('sat', 'Control Panel', 140, 255, nothing)  # sets the sat trackbar on the control panel
+cv2.createTrackbar('val', 'Control Panel', 134, 255, nothing)  # sets the val trackbar on the control panel
+cv2.createTrackbar('range', 'Control Panel', 77, 127, nothing)
+cv2.createTrackbar('srange', 'Control Panel', 28, 127, nothing)
 device = cv2.VideoCapture(0)
 
 while True:
@@ -61,13 +67,18 @@ while True:
         #calculate the radius and center of circle
         ((x,y), radius) = cv2.minEnclosingCircle(c)
         cv2.circle(frame, (int(x), int(y)), int(radius),( 255, 255,0),5, 2)
+        print(radius)
+        #currentDistance = distance(radius)
+        #print(currentDistance)
+        sdDistance = distanceSD(radius)-1.23
+        print(sdDistance)
         #cv2.circle(mask, (int(x), int(y)), int(radius), color[, thickness[, lineType[, shift]]])
 
     cv2.imshow("frame",frame)
     cv2.imshow("mask", mask)
     #track = cv2.bitwise_and(frame,frame,mask=final)
     #cv2.imshow("Tracking", track)
-    #bitwise function to implement the mask on the frame 
+    #bitwise function to implement the mask on the frame
     result = cv2.bitwise_and(frame,frame,mask=mask)
     cv2.imshow("Result", result)
 
