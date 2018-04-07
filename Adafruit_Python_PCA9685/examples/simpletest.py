@@ -59,28 +59,35 @@ pwm.set_pwm_freq(48)
 #every 60 times per second
 #____________||___ duration of pulse will always be ~ 15.82ms repeating
 #set motors off
-pwm.set_pwm(1, 0, 310)
+pwm.set_pwm(1, 0, 310)#stop
 print('Moving servo on channel 0, press Ctrl-C to quit...')
 time.sleep(1)
-pwm.set_pwm(1, 0, 340)
+pwm.set_pwm(1, 0, 350)#Goforward
 time.sleep(2)
-pwm.set_pwm(1, 0, 310)
+pwm.set_pwm(1, 0, 310)#stop
+time.sleep(1)
+pwm.set_pwm(1, 0, 200)#1/2 of the reverse, in other words, you have to call it again
+time.sleep(0.1)
+##pwm.set_pwm(1,0, 310)#stop
+##time.sleep(1)
+pwm.set_pwm(1, 0, 200)#1/2 of the reverse
+time.sleep(1)
+pwm.set_pwm(1,0, 310)#stop
 time.sleep(1)
     # Move servo on channel O between extremes.
-while(1):
 
+
+pwm.set_pwm(0, 0, 310)# center
+time.sleep(2)
+
+pwm.set_pwm(0, 0, 420)#left
+time.sleep(2)
     
-    
-    pwm.set_pwm(0, 0, 310)
-    time.sleep(2)
 
-    pwm.set_pwm(0, 0, 530)
-    time.sleep(2)
+pwm.set_pwm(0, 0, 310)#center
+time.sleep(2)
 
-    pwm.set_pwm(0, 0, 310)
-    time.sleep(2)
+pwm.set_pwm(0, 0, 130)#right
+time.sleep(2)
 
-    pwm.set_pwm(0, 0, 130)
-    time.sleep(2)
 
-    break;
