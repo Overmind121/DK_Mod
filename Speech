@@ -1,0 +1,15 @@
+import winspeech
+import sys
+
+winspeech.initialize_recognizer(winspeech.SHARED_RECOGNIZER)
+
+def SpeechRecognized(result,listener):
+    print("You Said : %s" % result)
+    if result == "Stop" or result == "stop":
+        winspeech.stop_listening()
+        sys.exit(0)
+
+listener = winspeech.listen_for_anything(SpeechRecognized)
+
+while listener.is_listening():
+    continue
